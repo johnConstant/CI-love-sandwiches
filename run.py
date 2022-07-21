@@ -99,6 +99,21 @@ def get_last_5_entries_sales():
     return columns
 
 
+def calculate_stock_data(data):
+    """
+    Calculate the average sales adding 10% for new stock levels
+    """
+    print('Calculating new stock level...')
+    new_stock_data = []
+
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = round(average * 1.1)
+        new_stock_data.append(stock_num)
+    return new_stock_data
+
+
 def main():
     """
     Run all program functions
@@ -108,7 +123,12 @@ def main():
     update_worksheet(inputted_data, 'sales')
     surplus_data = calculate_surplus_stock(inputted_data)
     update_worksheet(surplus_data, 'surplus')
+
+    sales_columns = get_last_5_entries_sales()
+    stock_level = calculate_stock_data(sales_columns)
+    update_worksheet(stock_level, 'stock')
+
   
 
-# main()
-get_last_5_entries_sales()
+main()
+
