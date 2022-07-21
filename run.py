@@ -53,14 +53,14 @@ def validate_data(values):
     return True
 
 
-def update_sales_worksheet(data):
+def update_worksheet(data, sheet):
     """
-    Add sales data to Google sheet
+    Add data to Google sheet
     """
-    print('Adding sales figures to worksheet')
-    sales_worksheet = SHEET.worksheet('sales')
-    sales_worksheet.append_row(data)
-    print('Sales data added to spreadsheet!\n')
+    print(f'Adding {sheet} figures to worksheet')
+    worksheet = SHEET.worksheet(sheet)
+    worksheet.append_row(data)
+    print(f'{sheet} data added to spreadsheet!\n')
 
 
 def calculate_surplus_stock(sales_row):
@@ -80,7 +80,7 @@ def calculate_surplus_stock(sales_row):
     for stock, sales in zip(stock_row, sales_row):
         surplus = int(stock) - sales
         surplus_data.append(surplus)
-    print(surplus_data)
+    return surplus_data
 
 
 def main():
@@ -89,8 +89,9 @@ def main():
     """
     data = get_sales_data()
     inputted_data = [int(num) for num in data]
-    update_sales_worksheet(inputted_data)
-    calculate_surplus_stock(inputted_data)
-
+    update_worksheet(inputted_data, 'sales')
+    surplus_data = calculate_surplus_stock(inputted_data)
+    update_worksheet(surplus_data, 'surplus')
+  
 
 main()
