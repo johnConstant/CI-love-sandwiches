@@ -30,12 +30,15 @@ def get_sales_data():
             print('Data is valid!')
             break
 
+    return sales_data
+
 
 def validate_data(values):
     """
     Convert string to Integers within the Try block
-    Return ValueError if strings cannot be converted into Integers
-    Or if there aren't 6 values entered
+    Return ValueError if strings cannot be converted into Integers or if there
+    aren't 6 values entered. The request loop will continue until valid data
+    is supplied
     """
     try:
         [int(value) for value in values]
@@ -46,8 +49,19 @@ def validate_data(values):
     except ValueError as e:
         print(f"Invalid data: {e}, please try again")
         return False
-    
     return True
 
 
-get_sales_data()
+def update_sales_worksheet(data):
+    """
+    Add sales data to Google sheet
+    """
+    print('Adding sales figures to worksheet')
+    sales_worksheet = SHEET.worksheet('sales')
+    sales_worksheet.append_row(data)
+    print('Sales data added to spreadsheet!\n')
+
+
+data = get_sales_data()
+inputted_data = [int(num) for num in data]
+update_sales_worksheet(inputted_data)
